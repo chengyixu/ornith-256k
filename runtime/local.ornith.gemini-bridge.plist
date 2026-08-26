@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>local.ornith.gemini-bridge</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/wilsonxu/.nvm/versions/node/v24.11.1/bin/node</string>
+    <string>/Users/wilsonxu/Models/ornith-256k/runtime/gemini-openai-bridge.mjs</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/wilsonxu/Models/ornith-256k/runtime</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/wilsonxu/Models/ornith-256k/runtime/logs/gemini-openai-bridge.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/wilsonxu/Models/ornith-256k/runtime/logs/gemini-openai-bridge.error.log</string>
+</dict>
+</plist>

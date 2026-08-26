@@ -1,0 +1,2 @@
+# Raw long-context proof, preserved from acceptance run.
+{"check":"context-256k","requested_content_tokens":260000,"server_prompt_tokens":260013,"completion_tokens":16,"e2e_latency_s":2787.49,"sentinel":"ORNITH-256K-NEEDLE-7F3A","sentinel_found":true,"accepted":true}

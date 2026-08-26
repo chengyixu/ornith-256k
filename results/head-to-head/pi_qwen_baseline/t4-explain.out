@@ -1,0 +1,50 @@
+
+
+I searched the entire `~/herdr-bench` tree — **there is no `package.json` there** (at the top level or in any subdirectory). So here's what I found instead:
+
+## What's actually in `~/herdr-bench`
+
+It's a small **Python/bash benchmark project**, not a Node.js project:
+
+- `bench_pi.sh` — a script that runs a `pi` agent task against a local Qwen model endpoint, captures timing + token/output stats, and appends a JSON record to `results/summary.jsonl`
+- `fib.py` — a sample iterative Fibonacci script
+- `results/` — captured outputs (`.out`/`.err`) and `summary.jsonl` from benchmark runs
+- `__pycache__/` — Python bytecode cache
+
+Since the project's spirit is "explain the manifest file," here's a general explanation of **every top-level key in a `package.json`**, which is likely what you wanted:
+
+| Key | Meaning |
+|---|---|
+| `name` | Package identifier (lowercase, no spaces). Used in `npm install <name>` and on the registry. Required (npm infers from directory if missing). |
+| `version` | Semantic version string (`MAJOR.MINOR.PATCH`). Bump on every publish. |
+| `description` | Short human description shown in `npm search`/registry. |
+| `main` | Default entry point file (CommonJS), e.g. `"dist/index.js"`. What you get from `require('pkg')`. |
+| `module` | Entry point for ES-module-aware bundlers (Webpack, Rollup, Vite). |
+| `exports` | Modern, fine-grained subpath export map (e.g. `"./foo": "./dist/foo.js"`, plus `import`/`require`/`types` conditions). Supersedes `main`/`module` when present. |
+| `types` / `typings` | Default TypeScript type-definition file for the package. |
+| `scripts` | Shell commands runnable via `npm run <name>` (or built-ins like `npm test` → `scripts.test`). |
+| `dependencies` | Runtime deps — installed when someone installs your package. |
+| `devDependencies` | Build/test-only deps — installed for the package itself, **not** transitive consumers. |
+| `peerDependencies` | Deps the host project must provide (plugins, frameworks — e.g. React). |
+| `optionalDependencies` | Deps that may fail to install (platform-specific binaries) without aborting. |
+| `engines` | Required Node/npm version ranges. |
+| `bin` | CLI executables: maps command name → script file (auto-linked on global install). |
+| `files` | Whitelist of files to include in the published tarball (overrides `.npmignore`). |
+| `repository` | Git/registry URL where the source lives. |
+| `keywords` | Search tags for the registry. |
+| `author` / `contributors` | Package author(s). |
+| `license` | License identifier (e.g. `"MIT"`) or file path. |
+| `funding` | Where to support the project (URL, email, or platform). |
+| `sideEffects` | Tells bundlers which files have side effects (CSS, polyfills) for tree-shaking. |
+| `type` | `"module"` (ESM) or `"commonjs"` — determines how `.js` files are interpreted. |
+| `private` | `true` = refuse to `npm publish` (common for repos/apps). |
+| `workspaces` | Monorepo: globs or array of sub-projects npm treats as one unit. |
+| `packageManager` | Locks the package manager + version (e.g. `"pnpm@9.0.0"`) for tools like `corepack`. |
+| `publishConfig` | Publish-time overrides (e.g. `access: "public"` for scoped packages, registry URL). |
+| `conflicts` | Packages that cannot be installed alongside this one. |
+| `homepage` | Project website (auto-added to the registry page). |
+| `husky` / `lint-staged` etc. | Tool-specific config sections (git hooks, linting) — tooling, not npm core. |
+
+The two **required** keys are `name` and `version` (npm tolerates their absence but warns); everything else is optional.
+
+If you'd rather I explain the keys from an actual `package.json` on this machine (there are several in your home dir, e.g. `~/fetch-og`, `~/reports-check`), just point me at one.

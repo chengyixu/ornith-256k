@@ -1,0 +1,42 @@
+[
+  {
+    "label": "short-answer",
+    "runs": 3,
+    "ttft_best_s": 0.155,
+    "ttft_median_s": 0.165,
+    "decode_best_tps": 81.89,
+    "decode_median_tps": 72.83
+  },
+  {
+    "label": "code-gen",
+    "runs": 3,
+    "ttft_best_s": 0.171,
+    "ttft_median_s": 0.182,
+    "decode_best_tps": 79.92,
+    "decode_median_tps": 66.17
+  },
+  {
+    "label": "summarize",
+    "runs": 3,
+    "ttft_best_s": 46.976,
+    "ttft_median_s": 50.097,
+    "decode_best_tps": 50.13,
+    "decode_median_tps": 31.74
+  },
+  {
+    "label": "long-form",
+    "runs": 3,
+    "ttft_best_s": 0.198,
+    "ttft_median_s": 0.223,
+    "decode_best_tps": 35.65,
+    "decode_median_tps": 35.64
+  },
+  {
+    "label": "reasoning",
+    "runs": 3,
+    "ttft_best_s": 0.251,
+    "ttft_median_s": 0.262,
+    "decode_best_tps": 37.59,
+    "decode_median_tps": 36.62
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-08-26T02:20:50.882Z",
+  "service": "local.llamacpp.ornith-256k",
+  "listen": "127.0.0.1:7871",
+  "serverModel": "Ornith-1.5-35B-A3B-Q4_K_M",
+  "serverContextWindow": 262144,
+  "keyFileMode": "600",
+  "ccSwitch": {
+    "providerId": "ornith-local-256k",
+    "appType": "pi",
+    "baseUrl": "http://127.0.0.1:7871/v1",
+    "api": "openai-completions",
+    "modelId": "Ornith-1.5-35B-A3B-Q4_K_M",
+    "contextWindow": 262144,
+    "hasApiKey": true
+  },
+  "owlspace": {
+    "providerLabel": "Ornith 1.5 35B 256K",
+    "baseUrl": "http://127.0.0.1:7871",
+    "modelId": "Ornith-1.5-35B-A3B-Q4_K_M",
+    "hasApiKey": true,
+    "activeId": "builtin:local:http://127.0.0.1:7870"
+  },
+  "owlspaceRe": {
+    "slug": "ornith-local-256k",
+    "baseUrl": "http://127.0.0.1:7871/v1",
+    "providerType": "pi_compat",
+    "authType": "api_key_with_endpoint",
+    "api": "openai-completions",
+    "modelId": "Ornith-1.5-35B-A3B-Q4_K_M",
+    "contextWindow": 262144,
+    "defaultConnection": "omlx-local",
+    "credentialMatchesCcSwitch": true
+  },
+  "preserved256kProof": "/Users/wilsonxu/Models/ornith-256k/results/context_256k.json"
+}

@@ -1,0 +1,11 @@
+
+
+Done.
+
+- Created `/Users/wilsonxu/herdr-bench/fib.py` with an iterative `fib(n)` (loop-based, no recursion).
+- Ran it for n=10 with bash:
+
+```
+fib(10) = 55
+```
+

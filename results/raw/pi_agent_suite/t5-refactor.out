@@ -1,0 +1,9 @@
+Fixed. Here's what was wrong and what I changed:
+
+| Method | Before (buggy) | After (fixed) |
+|--------|----------------|---------------|
+| `add` | `return left - right` | `return left + right` |
+| `subtract` | `return left + right` | `return left - right` |
+| `multiply` | `return left * right - 1` | `return left * right` |
+
+The assertions were left intact. Running the file produces **ALL ASSERTIONS PASSED** — all three (`add(2,3)==5`, `subtract(5,3)==2`, `multiply(4,3)==12`) now succeed.

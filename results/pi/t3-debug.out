@@ -1,0 +1,9 @@
+## Summary
+
+**Bug:** In `broken.py`, the `total` function subtracted 1 from the sum (`return sum(values) - 1`), so `total([1, 2, 3])` returned `5` instead of `6`, failing the `AssertionError` check.
+
+**Fix:** Changed the return statement to `return sum(values)` so it correctly sums all values without the off-by-one subtraction.
+
+**Test behavior unchanged:** The assertion `total([1, 2, 3]) != 6` was left as-is, and it now passes because `total([1, 2, 3])` correctly returns `6`.
+
+**Observed result:** After the fix, `python3 broken.py` ran without raising an `AssertionError` (printed "RAN OK").

@@ -1,0 +1,8 @@
+Done. `refactor_demo.py` now works.
+
+What was buggy (each method used the wrong operator):
+- `add` did `a - b` → fixed to `a + b`
+- `subtract` did `a + b` → fixed to `a - b`
+- `multiply` did `a / b` → fixed to `a * b`
+
+Running `python3 refactor_demo.py` prints `All tests passed.`, confirming `2+3=5`, `5-3=2`, and `4*3=12` all pass.

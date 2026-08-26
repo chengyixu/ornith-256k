@@ -1,0 +1,15 @@
+{"label": "short-answer", "run": 0, "prompt_tokens": 36, "gen_tokens": 78, "ttft_s": 0.445, "prefill_tps": 80.94, "decode_tps": 63.71, "total_s": 1.65}
+{"label": "short-answer", "run": 1, "prompt_tokens": 36, "gen_tokens": 80, "ttft_s": 0.146, "prefill_tps": 245.98, "decode_tps": 61.33, "total_s": 1.43}
+{"label": "short-answer", "run": 2, "prompt_tokens": 36, "gen_tokens": 81, "ttft_s": 0.147, "prefill_tps": 244.21, "decode_tps": 63.51, "total_s": 1.41}
+{"label": "code-gen", "run": 0, "prompt_tokens": 53, "gen_tokens": 417, "ttft_s": 0.289, "prefill_tps": 183.44, "decode_tps": 85.5, "total_s": 5.15}
+{"label": "code-gen", "run": 1, "prompt_tokens": 53, "gen_tokens": 430, "ttft_s": 0.178, "prefill_tps": 297.08, "decode_tps": 85.26, "total_s": 5.21}
+{"label": "code-gen", "run": 2, "prompt_tokens": 53, "gen_tokens": 463, "ttft_s": 0.183, "prefill_tps": 289.93, "decode_tps": 80.38, "total_s": 5.93}
+{"label": "summarize", "run": 0, "prompt_tokens": 32447, "gen_tokens": 48, "ttft_s": 49.271, "prefill_tps": 658.54, "decode_tps": 36.24, "total_s": 50.57}
+{"label": "summarize", "run": 1, "prompt_tokens": 32447, "gen_tokens": 31, "ttft_s": 81.815, "prefill_tps": 396.59, "decode_tps": 16.7, "total_s": 83.61}
+{"label": "summarize", "run": 2, "prompt_tokens": 32447, "gen_tokens": 88, "ttft_s": 107.001, "prefill_tps": 303.24, "decode_tps": 20.02, "total_s": 111.35}
+{"label": "long-form", "run": 0, "prompt_tokens": 55, "gen_tokens": 1024, "ttft_s": 0.366, "prefill_tps": 150.46, "decode_tps": 30.1, "total_s": 34.35}
+{"label": "long-form", "run": 1, "prompt_tokens": 55, "gen_tokens": 1024, "ttft_s": 0.241, "prefill_tps": 228.64, "decode_tps": 32.13, "total_s": 32.08}
+{"label": "long-form", "run": 2, "prompt_tokens": 55, "gen_tokens": 1024, "ttft_s": 0.278, "prefill_tps": 197.75, "decode_tps": 34.42, "total_s": 30.0}
+{"label": "reasoning", "run": 0, "prompt_tokens": 94, "gen_tokens": 384, "ttft_s": 0.324, "prefill_tps": 290.2, "decode_tps": 42.34, "total_s": 9.37}
+{"label": "reasoning", "run": 1, "prompt_tokens": 94, "gen_tokens": 384, "ttft_s": 0.304, "prefill_tps": 308.91, "decode_tps": 42.19, "total_s": 9.38}
+{"label": "reasoning", "run": 2, "prompt_tokens": 94, "gen_tokens": 384, "ttft_s": 0.304, "prefill_tps": 309.45, "decode_tps": 45.33, "total_s": 8.75}

@@ -1,0 +1,14 @@
+# Raw head-to-head streaming benchmark, 2026-08-26.
+# Identical prompts, temperature 0, best/median of 3 runs.
+# Qwen3.8-27B-4bit via oMLX z-lab fork (port 7870), reasoning tokens included in decode rate.
+# Ornith-1.5-35B-A3B-Q4_K_M via llama.cpp Metal (port 7871), reasoning off.
+{"model":"Qwen3.8-27B-4bit","runtime":"omlx-0.6.2-zlab-dflash2","label":"short-answer","runs":3,"ttft_best_s":0.518,"ttft_median_s":0.595,"decode_best_tps":53.98,"decode_median_tps":51.52}
+{"model":"Qwen3.8-27B-4bit","runtime":"omlx-0.6.2-zlab-dflash2","label":"code-gen","runs":3,"ttft_best_s":0.79,"ttft_median_s":0.996,"decode_best_tps":36.89,"decode_median_tps":31.22}
+{"model":"Qwen3.8-27B-4bit","runtime":"omlx-0.6.2-zlab-dflash2","label":"summarize","runs":3,"ttft_best_s":1.493,"ttft_median_s":1.537,"decode_best_tps":56.99,"decode_median_tps":53.68}
+{"model":"Qwen3.8-27B-4bit","runtime":"omlx-0.6.2-zlab-dflash2","label":"long-form","runs":3,"ttft_best_s":0.769,"ttft_median_s":0.835,"decode_best_tps":11.11,"decode_median_tps":9.12}
+{"model":"Qwen3.8-27B-4bit","runtime":"omlx-0.6.2-zlab-dflash2","label":"reasoning","runs":3,"ttft_best_s":1.364,"ttft_median_s":1.425,"decode_best_tps":9.58,"decode_median_tps":9.18}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","runtime":"llama-server-0.2.0-metal-b10566","label":"short-answer","runs":3,"ttft_best_s":0.034,"ttft_median_s":0.044,"decode_best_tps":72.29,"decode_median_tps":72.29}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","runtime":"llama-server-0.2.0-metal-b10566","label":"code-gen","runs":3,"ttft_best_s":0.037,"ttft_median_s":0.046,"decode_best_tps":43.24,"decode_median_tps":43.17}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","runtime":"llama-server-0.2.0-metal-b10566","label":"summarize","runs":3,"ttft_best_s":0.033,"ttft_median_s":0.033,"decode_best_tps":66.32,"decode_median_tps":66.23}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","runtime":"llama-server-0.2.0-metal-b10566","label":"long-form","runs":3,"ttft_best_s":0.044,"ttft_median_s":0.052,"decode_best_tps":51.87,"decode_median_tps":50.98}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","runtime":"llama-server-0.2.0-metal-b10566","label":"reasoning","runs":3,"ttft_best_s":0.038,"ttft_median_s":0.046,"decode_best_tps":37.13,"decode_median_tps":36.99}

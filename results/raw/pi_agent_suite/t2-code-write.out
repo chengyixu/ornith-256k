@@ -1,0 +1,7 @@
+Done. Created `fib.py` and verified with `python3 fib.py`.
+
+**Results:**
+- `fib(10) == 55` ✓
+- Negative `n` raises `ValueError` ✓ (tested with `-1` and `-5`)
+
+The function uses iteration with a two-variable loop, so it runs in O(n) time and O(1) space, and handles the edge cases `fib(0)==0` and `fib(1)==1` correctly.
