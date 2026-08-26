@@ -1,18 +1,45 @@
 {
-  "checkedAt": "2026-08-26T02:20:50.882Z",
+  "checkedAt": "2026-08-26T04:31:33Z",
   "service": "local.llamacpp.ornith-256k",
   "listen": "127.0.0.1:7871",
   "serverModel": "Ornith-1.5-35B-A3B-Q4_K_M",
   "serverContextWindow": 262144,
-  "keyFileMode": "600",
+  "credentialStored": true,
   "ccSwitch": {
-    "providerId": "ornith-local-256k",
-    "appType": "pi",
-    "baseUrl": "http://127.0.0.1:7871/v1",
-    "api": "openai-completions",
+    "applicationVersion": "3.20.0",
+    "selectedProfiles": {
+      "claude": "ornith1535b256klocal-1787714208191",
+      "codex": "ornith1535b256klocal-1787711845612",
+      "gemini": "ornith1535b256klocal-1787714286854",
+      "grokbuild": "ornith1535b256klocal-1787714288538",
+      "pi": "ornith-local-256k"
+    },
     "modelId": "Ornith-1.5-35B-A3B-Q4_K_M",
     "contextWindow": 262144,
-    "hasApiKey": true
+    "profilesAreInactiveByDefault": true,
+    "liveClientChecks": {
+      "claude": "CC_SWITCH_CLAUDE_OK",
+      "codex": "CC_SWITCH_CODEX_OK",
+      "gemini": "CC_SWITCH_GEMINI_OK",
+      "grokbuild": "CC_SWITCH_GROKBUILD_OK",
+      "pi": "CC_SWITCH_PI_OK"
+    },
+    "skippedByUser": [
+      "hermes",
+      "openclaw",
+      "opencode"
+    ]
+  },
+  "geminiBridge": {
+    "listen": "127.0.0.1:7872",
+    "launchAgent": "local.ornith.gemini-bridge",
+    "apiContractChecks": [
+      "models",
+      "countTokens",
+      "generateContent",
+      "streamGenerateContent",
+      "unauthorizedRequest"
+    ]
   },
   "owlspace": {
     "providerLabel": "Ornith 1.5 35B 256K",

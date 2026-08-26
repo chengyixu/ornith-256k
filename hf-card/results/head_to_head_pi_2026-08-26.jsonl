@@ -1,0 +1,17 @@
+# Raw head-to-head pi agent benchmark, 2026-08-26.
+# pi CLI non-interactive mode, identical prompts, isolated workspace.
+{"model":"Qwen3.8-27B-4bit","task":"smoke-test","rc":0,"wall_s":2.1,"output_chars":14}
+{"model":"Qwen3.8-27B-4bit","task":"t1-read-file","rc":0,"wall_s":33.75,"output_chars":202}
+{"model":"Qwen3.8-27B-4bit","task":"t2-code-write","rc":0,"wall_s":45.09,"output_chars":163,"verified":"fib(10)=55"}
+{"model":"Qwen3.8-27B-4bit","task":"t3-debug","rc":0,"wall_s":188.95,"output_chars":867,"note":"no fixture present; model searched filesystem, reported missing file"}
+{"model":"Qwen3.8-27B-4bit","task":"t4-explain","rc":0,"wall_s":268.55,"output_chars":3753}
+{"model":"Qwen3.8-27B-4bit","task":"t5-refactor","rc":0,"wall_s":138.96,"output_chars":539,"verified":"all Calculator asserts pass"}
+{"model":"Qwen3.8-27B-4bit","task":"t6-multi-step","rc":0,"wall_s":75.42,"output_chars":216}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","task":"smoke-test","rc":0,"wall_s":1.94,"output_chars":12}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","task":"t1-read-file","rc":0,"wall_s":3.06,"output_chars":152}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","task":"t2-code-write","rc":0,"wall_s":4.48,"output_chars":211,"verified":"fib(10)=55"}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","task":"t3-debug","rc":1,"wall_s":145.37,"output_chars":1026,"note":"first pass, no fixture present; model searched filesystem and asked for clarification"}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","task":"t4-explain","rc":0,"wall_s":21.24,"output_chars":3283}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","task":"t3-debug-rerun-with-fixture","rc":0,"wall_s":7.15,"output_chars":630,"verified":"off-by-one fixed; both test cases correct"}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","task":"t5-refactor","rc":0,"wall_s":11.16,"output_chars":334,"verified":"all Calculator asserts pass"}
+{"model":"Ornith-1.5-35B-A3B-Q4_K_M","task":"t6-multi-step","rc":0,"wall_s":5.46,"output_chars":258,"verified":"sorted output + line count"}

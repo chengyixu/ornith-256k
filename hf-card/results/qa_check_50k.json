@@ -1,0 +1,20 @@
+[
+  {
+    "test": "needle",
+    "ctx_target": 50000,
+    "prompt_tokens": 67511,
+    "found": "5/5",
+    "pass": true,
+    "latency_s": 251.1,
+    "answer_head": "ZEBRA-7741, LANTERN-3382, QUARTZ-9056, HARBOR-1173, MEADOW-6649"
+  },
+  {
+    "test": "coding",
+    "has_signature": true,
+    "has_guard": true,
+    "plausible_on": true,
+    "gen_tokens": 104,
+    "latency_s": 2.7,
+    "answer_head": "```python def moving_average(nums: list[float], k: int) -> list[float]:     if k <= 0 or k > len(nums):         return []          result = []     current_sum = sum(nums[:k])     result.append(current"
+  }
+]

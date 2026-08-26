@@ -1,0 +1,29 @@
+[
+  {
+    "turn": 1,
+    "kind": "cold_base",
+    "ttft_s": 1.68,
+    "total_s": 1.74,
+    "prompt_tokens": 32438,
+    "gen_tokens": 4,
+    "head": "391"
+  },
+  {
+    "turn": 2,
+    "kind": "cached_prefix",
+    "ttft_s": 0.29,
+    "total_s": 0.37,
+    "prompt_tokens": 32473,
+    "gen_tokens": 5,
+    "head": "1457"
+  },
+  {
+    "turn": 3,
+    "kind": "cached_prefix_longer_answer",
+    "ttft_s": 0.29,
+    "total_s": 0.89,
+    "prompt_tokens": 32509,
+    "gen_tokens": 28,
+    "head": "The technical log above covers AI/computer hardware performa"
+  }
+]

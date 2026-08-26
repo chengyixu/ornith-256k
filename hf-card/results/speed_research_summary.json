@@ -1,0 +1,91 @@
+{
+  "production": {
+    "binary": "/opt/homebrew/bin/llama-server",
+    "version": "0.2.0 build 10566",
+    "context_tokens": 262144,
+    "speculative": false,
+    "decision": "retained as the general-purpose production runtime"
+  },
+  "official_model": {
+    "repository": "ornith-ai/Ornith-1.5-35B-A3B-GGUF",
+    "file": "Ornith-1.5-35B-Q4_K_M.gguf",
+    "sha256": "42739874cc2ccfdb8523b23fbe52e29b2a7555c8176737ca9ca0b5d59859d41f",
+    "embedded_mtp_metadata": "qwen35moe.nextn_predict_layers = 1"
+  },
+  "candidates": [
+    {
+      "name": "embedded draft-mtp",
+      "runtime": "upstream llama.cpp d222767, 32k canary",
+      "result": "functional and smoke-correct; rejected for general deployment",
+      "reason": "code generation increased, but short answers, long-form, and long-context decode regressed",
+      "artifact_dir": "results/mtp-canary/20260826-062833"
+    },
+    {
+      "name": "upstream no-spec",
+      "runtime": "llama.cpp d222767",
+      "result": "passed independent 262k proof",
+      "reason": "260013 prompt tokens and sentinel passed in 2732.46s, but general 262k decode profile was slower than production except modest code/summarize gains",
+      "artifact_dir": "results/upstream-262k-canary/20260826-064430"
+    },
+    {
+      "name": "ngram-mod",
+      "runtime": "upstream llama.cpp d222767, 32k quality-safe default canary",
+      "result": "functional and smoke-correct; rejected for general deployment",
+      "reason": "mixed code improvement but long-form and reasoning decode regressed",
+      "artifact_dir": "results/ngram-mod-default-canary/20260826-074206"
+    }
+  ],
+  "workload_matrix": [
+    {
+      "label": "short-answer",
+      "production_262k_decode_median_tps": 86.3,
+      "mtp_32k_decode_median_tps": 63.51,
+      "upstream_32k_decode_median_tps": 79.67,
+      "upstream_262k_decode_median_tps": 52.77,
+      "ngram_mod_32k_decode_median_tps": 72.83
+    },
+    {
+      "label": "code-gen",
+      "production_262k_decode_median_tps": 48.91,
+      "mtp_32k_decode_median_tps": 85.26,
+      "upstream_32k_decode_median_tps": 76.2,
+      "upstream_262k_decode_median_tps": 52.49,
+      "ngram_mod_32k_decode_median_tps": 66.17
+    },
+    {
+      "label": "summarize",
+      "production_262k_decode_median_tps": 29.07,
+      "mtp_32k_decode_median_tps": 20.02,
+      "upstream_32k_decode_median_tps": 51.0,
+      "upstream_262k_decode_median_tps": 29.77,
+      "ngram_mod_32k_decode_median_tps": 31.74
+    },
+    {
+      "label": "long-form",
+      "production_262k_decode_median_tps": 41.83,
+      "mtp_32k_decode_median_tps": 32.13,
+      "upstream_32k_decode_median_tps": 37.85,
+      "upstream_262k_decode_median_tps": 36.8,
+      "ngram_mod_32k_decode_median_tps": 35.64
+    },
+    {
+      "label": "reasoning",
+      "production_262k_decode_median_tps": 43.09,
+      "mtp_32k_decode_median_tps": 42.34,
+      "upstream_32k_decode_median_tps": 36.49,
+      "upstream_262k_decode_median_tps": 39.01,
+      "ngram_mod_32k_decode_median_tps": 36.62
+    }
+  ],
+  "upstream_262k_context_proof": {
+    "model": "Ornith-1.5-35B-A3B-Q4_K_M-Upstream-262K",
+    "requested_content_tokens": 260000,
+    "server_prompt_tokens": 260013,
+    "completion_tokens": 16,
+    "latency_s": 2732.46,
+    "answer": "ORNITH-256K-NEEDLE-7F3A",
+    "sentinel_found": true,
+    "context_256k_proven": true
+  },
+  "conclusion": "No tested candidate dominated the existing 262k runtime across the intended API and agent workloads. The original service remains deployed; candidate artifacts are retained for repeatable future evaluation."
+}

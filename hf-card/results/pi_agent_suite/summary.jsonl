@@ -1,0 +1,6 @@
+{"task": "t1-read-file", "rc": 0, "wall_s": 6.44, "output_chars": 262, "approx_words": 44, "err_tail": ""}
+{"task": "t2-code-write", "rc": 0, "wall_s": 13.55, "output_chars": 319, "approx_words": 51, "err_tail": ""}
+{"task": "t3-debug", "rc": 0, "wall_s": 16.26, "output_chars": 599, "approx_words": 87, "err_tail": ""}
+{"task": "t4-explain", "rc": 0, "wall_s": 12.74, "output_chars": 1027, "approx_words": 149, "err_tail": ""}
+{"task": "t5-refactor", "rc": 0, "wall_s": 21.44, "output_chars": 494, "approx_words": 80, "err_tail": ""}
+{"task": "t6-multi-step", "rc": 0, "wall_s": 11.34, "output_chars": 412, "approx_words": 72, "err_tail": ""}
