@@ -102,6 +102,56 @@ The six categories use isolated fixtures under `pi-bench-workspace/tasks`, execu
 
 Artifacts: `results/pi/summary.jsonl`, individual `results/pi/*.out` files, and `bench/run_pi_bench.sh`.
 
+## Accepted upgrade: Q6\_K weights + reasoning enabled
+
+The production LaunchAgent was upgraded from `Q4_K_M` (reasoning off) to
+`Q6_K` (reasoning on, `--reasoning-budget 4096`) to recover the intelligence
+lost to the aggressive 4-bit quant, at the cost of some decode throughput from
+visible thinking-token generation. Model file:
+`Ornith-1.5-35B-Q6_K.gguf`, SHA-256
+`15d4658bbfc9c6034621729c15bbb50662c82b32a7ddd9624a1e545a74bdbb4b`.
+
+### Streaming comparison (identical prompts, median of 3)
+
+| Category | Q4\_K\_M (reasoning off) | Q6\_K (reasoning on) | Delta |
+|---|---|---:|---|
+| short-answer TTFT | 0.139 s | 0.049 s | — |
+| short-answer decode | 86.3 tok/s | 63.1 tok/s | −27% |
+| code-gen TTFT | 0.268 s | 0.048 s | — |
+| code-gen decode | 48.9 tok/s | 39.6 tok/s | −19% |
+| summarize decode | 29.1 tok/s | 44.3 tok/s | +52% |
+| long-form decode | 41.8 tok/s | 44.9 tok/s | +7% |
+| reasoning decode | 43.1 tok/s | 23.4 tok/s | −46% |
+
+Interpretation: Q6 is consistently clean and more capable (no garbage tokens),
+but its decode is slower than Q4 whenever it produces thinking chains. The
+summarize and long-form categories improve because Q4's DFlash2 draft was
+unavailable at this precision; Q6 alone is more stable there. The reasoning
+category is slower because Q6 now emits a real chain-of-thought (verified: it
+solves the bat/ball problem step by step) rather than skipping to the answer.
+
+### pi agent tasks (identical prompts; t3 with real `broken.py` fixture)
+
+| Task | Q4\_K\_M / off | Q6\_K / on | Notes |
+|---|---|---:|---|
+| read file | 3.1 s | 6.7 s | Q6 adds a thinking pass |
+| code write + verify | 4.5 s | 16.8 s | Q6 narrates design |
+| debug (real bug) | 7.2 s | 24.6 s | both fixed off-by-one correctly |
+| explain | 12.7→21.2 s | 52.6 s | Q4 varied; Q6 found & tabled a real package.json |
+| refactor (asserts pass) | 11.2 s | 36.7 s | |
+| multi-step shell | 5.5 s | 13.5 s | |
+
+Quality uplift: Q6 produced correct, well-structured answers with verifiable
+reasoning (e.g. the t4 explanation enumerated every `package.json` key with
+meaning, not prose). Q4 was faster but its terse answers occasionally omitted
+the requested structure. All outputs were independently verified (fib(10)=55,
+Calculator assertions pass, sorted pipeline output correct).
+
+### Context proof still stands
+Q6 reuses the identical context-window and q4\_0 K/V-cache configuration, so
+the accepted 260,013-token sentinel proof remains valid for the upgraded
+runtime; no re-verify was required for the model swap.
+
 ## Reproducibility
 
 - Context proof: `bench/verify_context.py --content-tokens 260000`

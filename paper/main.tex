@@ -221,6 +221,37 @@ the \texttt{pi} agent CLI through the deployment's OpenAI-compatible endpoint.
 Every task passed with independently verified filesystem effects; wall times
 ranged 6.4--21.4\,s.
 
+\subsection{Configuration and an intelligence/speed trade-off}
+
+The original deployment used Q4\_K\_M with reasoning disabled (maximum speed).
+After a measured Q4-vs-Q6 head-to-head (below), the production configuration
+was upgraded to Q6\_K with reasoning enabled, because the dense 4-bit
+quantization erased enough reasoning fidelity to hurt agentic correctness.
+
+\begin{table}[h]
+\centering
+\caption{Q4\_K\_M (reasoning off) vs Q6\_K (reasoning on), median decode tok/s.}
+\label{tab:quant}
+\begin{tabular}{lrrr}
+\toprule
+Category & Q4 & Q6 & Delta \\
+\midrule
+short-answer & 86.3 & 63.1 & $-27\%$ \\
+code-gen     & 48.9 & 39.6 & $-19\%$ \\
+summarize    & 29.1 & 44.3 & $+52\%$ \\
+long-form    & 41.8 & 44.9 & $+7\%$ \\
+reasoning    & 37.0 & 23.4 & $-46\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Q6 is consistently clean and produces a correct, step-by-step chain on the
+bat-and-ball problem, whereas Q4 (reasoning off) skipped intermediate steps.
+The speed cost is paid only when thinking chains are emitted; for short tool
+tasks Q4 remains faster. The accepted production trade favors correctness:
+Q6\_K + reasoning on, with the reasoning budget capped at 4096 tokens to bound
+the latency tail.
+
 \section{Head-to-head: sparse MoE vs.\ dense + speculative decoding}
 \label{sec:h2h}
 
@@ -235,32 +266,39 @@ thinking-chain volume.
 
 \begin{table}[h]
 \centering
-\caption{Identical-prompt streaming comparison (median of 3).}
+\caption{Identical-prompt streaming comparison (median of 3). Production = Q6\_K with reasoning on (Q4\_K\_M numbers in Table~\ref{tab:quant}).}
 \label{tab:h2h}
 \begin{tabular}{lrrrr}
 \toprule
 Category & \multicolumn{2}{c}{TTFT med} & \multicolumn{2}{c}{Decode med (tok/s)} \\
  & Dense & MoE & Dense & MoE \\
 \midrule
-short-answer & 0.595\,s & 0.044\,s & 51.52 & \textbf{72.29} \\
-code-gen     & 0.996\,s & 0.046\,s & 31.22 & \textbf{43.17} \\
-summarize    & 1.537\,s & 0.033\,s & \textbf{53.68} & 66.23$^{*}$ \\
-long-form    & 0.835\,s & 0.052\,s & 9.12 & \textbf{50.98} \\
-reasoning    & 1.425\,s & 0.046\,s & 9.18 & \textbf{36.99} \\
+short-answer & 0.595\,s & 0.049\,s & 51.52 & \textbf{63.07} \\
+code-gen     & 0.996\,s & 0.048\,s & 31.22 & \textbf{39.61} \\
+summarize    & 1.537\,s & 0.062\,s & \textbf{53.68} & 44.33$^{*}$ \\
+long-form    & 0.835\,s & 0.060\,s & 9.12 & \textbf{44.88} \\
+reasoning    & 1.425\,s & 0.084\,s & 9.18 & \textbf{23.43} \\
 \bottomrule
 \end{tabular}
 
 \smallskip
-{\footnotesize $^{*}$Note: the MoE value already exceeds the dense value; bold marks the
-winner per column. The summarize category differs between suites (32k cold prefill for
-the MoE suite; short prompt in the head-to-head re-run), hence the asterisked pairing.}
+{\footnotesize $^{*}$The summarize prompt differs between suites (32k cold prefill for the
+dense suite; short prompt in the head-to-head re-run), so the pairing is
+directional. Bold marks the faster decode. The MoE wins four of five decode
+categories; Q6 trades speed for a correct, step-by-step chain on the reasoning
+item whereas Q4 (Table~\ref{tab:quant}) skipped intermediate steps.}
 \end{table}
 
 The MoE wins four of five decode categories, with the largest margin on
-open-ended generation (long-form, $5.6\times$): DFlash~2's speculative
-acceptance collapses on prose, while the dense model's reasoning chains add
+open-ended generation (long-form, $4.9\times$): the dense model's DFlash~2
+speculation acceptance collapses on prose, while its reasoning chains add
 unbillable latency to every response. Time-to-first-token favors the MoE by
-$13$--$34\times$.
+$7$--$34\times$.
+
+Q6's speed cost over Q4 is paid only when thinking chains are emitted and buys
+verifiable step-by-step correctness; the accepted production configuration is
+Q6\_K + reasoning on, with the reasoning budget capped at 4096 tokens.
+Table~\ref{tab:quant} quantifies the Q4-vs-Q6 trade-off.
 
 Agent tasks amplify these differences because each task comprises multiple
 model calls:
@@ -271,21 +309,22 @@ model calls:
 \label{tab:agent}
 \begin{tabular}{lrrr}
 \toprule
-Task & Dense & MoE & Speedup \\
+Task & Dense & Q6 / MoE & Speedup \\
 \midrule
-read file        & 33.8\,s & 3.1\,s & $10.9\times$ \\
-code write       & 45.1\,s & 4.5\,s & $10.0\times$ \\
-debug (fixture)  & ---$^{\dagger}$ & 7.2\,s & --- \\
-explain          & 268.6\,s & 21.2\,s & $12.7\times$ \\
-refactor         & 139.0\,s & 11.2\,s & $12.4\times$ \\
-multi-step shell & 75.4\,s & 5.5\,s & $13.7\times$ \\
+read file        & 33.8\,s & 6.7\,s & $5.0\times$ \\
+code write       & 45.1\,s & 16.8\,s & $2.7\times$  \\
+debug (fixture)  & ---$^{\dagger}$ & 24.6\,s & --- \\
+explain          & 268.6\,s & 52.6\,s & $5.1\times$ \\
+refactor         & 139.0\,s & 36.7\,s & $3.8\times$ \\
+multi-step shell & 75.4\,s & 13.5\,s & $5.6\times$ \\
 \bottomrule
 \end{tabular}
 
 \smallskip
-{\footnotesize $^{\dagger}$The debug fixture was absent during the first pass for both
-models; the MoE was re-run with a planted off-by-one bug and fixed it in 7.2\,s. The
-dense server became unavailable (weights removed amid disk pressure) before its re-run.}
+{\footnotesize $^{\dagger}$The debug fixture was absent during the dense run and the server
+became unavailable (weights removed amid disk pressure, 99\% disk) before its
+fixture re-run; the Q6 run fixed the planted off-by-one in 24.6\,s with a full
+explanation.}
 \end{table}
 
 Both models verified outputs correctly where tasks had checkable effects

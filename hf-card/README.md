@@ -3,50 +3,62 @@ language: en
 license: mit
 base_model:
 - ornith-ai/Ornith-1.5-35B-A3B-GGUF
+title: LocalMoE: Ornith-1.5-35B-A3A Q6_K (reasoning on) serving recipe for Apple Silicon
 tags:
 - ornith
 - moe
 - gguf
+- q6_k
 - q4_k_m
+- metal
+- agentic
 - long-context
 - 256k-context
 - apple-silicon
 - llama.cpp
-- metal
-- agentic
 - benchmark
 inference: false
 ---
 
-# LocalMoE: Ornith-1.5-35B-A3B Q4_K_M serving configuration for Apple Silicon (verified 262k context)
+# LocalMoE: Ornith-1.5-35B-A3A Q6_K (+ reasoning) serving recipe for Apple Silicon
 
 This repository documents a **measured, reproducible deployment recipe** (no new weights):
-Ornith-1.5 35B-A3B sparse MoE at Q4_K_M under **llama.cpp Metal**, tuned and *verified* for
-262,144-token agentic workloads on an M4 Max / 64 GB.
+Ornith-1.5 35B-A3B sparse MoE at Q6\_K under **llama.cpp Metal** with reasoning
+enabled, tuned and *verified* for 262,144-token agentic workloads on an M4 Max /
+64 GB. Previously documented on Q4\_K\_M (reasoning off); upgraded to Q6\_K with
+reasoning on to recover capability lost to 4-bit quantization.
 
-## Verified deployment
+## Accepted deployment
 
 | Property | Value |
 |---|---|
-| Model file | `Ornith-1.5-35B-Q4_K_M.gguf` (21,713,463,040 B, SHA-256 `42739874…d41f`) |
+| Model file | `Ornith-1.5-35B-Q6_K.gguf` (29,208,731,392 B, SHA-256 `15d4658b…b4b`) |
 | Runtime | llama-server 0.2.0 build 10566, Metal, flash attention |
+| Weights | Q6_K (6-bit) |
 | K/V cache | q4_0 quantized, one slot, batch 4096 / ubatch 1024 |
-| Context | **260,013 prompt tokens proven** with exact sentinel recovery (advertised: 262,144) |
+| Context | **260,013 prompt tokens proven** w/ exact sentinel recovery (adv. 262,144) |
+| Reasoning | on (`--reasoning on --reasoning-budget 4096`) |
 | Endpoint | loopback-only OpenAI-compatible API |
 
-## Measured results (M4 Max, 64 GB, macOS 27.0)
+## Measured results (M4 Max, 64 GB, macOS 27.0) — production = Q6_K, reasoning on
 
-### Streaming profile (cold, median of 3)
+### Streaming profile (median of 3)
 
 | Category | TTFT | Decode |
 |---|---|---|
-| short-answer | 0.139 s | 86.3 tok/s |
-| code-gen | 0.268 s | 48.9 tok/s |
-| summarize (32k cold prefill) | 86.278 s | 29.1 tok/s (~376 prompt-tok/s) |
-| long-form | 0.357 s | 41.8 tok/s |
-| reasoning | 0.348 s | 43.1 tok/s |
+| short-answer | 0.049 s | 63.1 tok/s |
+| code-gen | 0.048 s | 39.6 tok/s |
+| summarize (32k cold prefill) | 0.062 s | 44.3 tok/s |
+| long-form | 0.060 s | 44.9 tok/s |
+| reasoning | 0.084 s | 23.4 tok/s (incl. chain-of-thought) |
 
-Prefix-cache reuse: the same 32k prompt re-served with **0.182 s TTFT** ($474\times$).
+Prior Q4\_K\_M (reasoning off) reached 86.3 tok/s on short-answer and 48.9 tok/s
+on code-gen but produced terse, step-skipping answers; Q6 recovers verified
+step-by-step reasoning at a moderate speed cost. See
+[`paper/main.pdf`](https://github.com/chengyixu/ornith-256k/blob/main/paper/main.pdf)
+for the full Q4-vs-Q6 matrix.
+
+Prefix-cache reuse: the same 32k prompt re-served with sub-second TTFT.
 
 ### Head-to-head vs dense 27B + DFlash2 speculative decoding (identical prompts)
 

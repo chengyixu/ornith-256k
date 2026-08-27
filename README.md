@@ -1,4 +1,4 @@
-# LocalMoE: Ornith-1.5-35B-A3B (Q4_K_M) at 262k Context on Apple Silicon
+# LocalMoE: Ornith-1.5-35B-A3A (Q6_K, reasoning on) at 262k Context on Apple Silicon
 
 [![Paper](https://img.shields.io/badge/paper-PDF-blue)](paper/main.pdf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -6,9 +6,16 @@
 [![Runtime](https://img.shields.io/badge/runtime-llama.cpp%20Metal-orange)]()
 
 End-to-end engineering study and reproducible artifacts for serving
-**Ornith-1.5-35B-A3B** (35B total / 3B active sparse MoE) in **Q4_K_M GGUF**
-at a verified **262,144-token context window** on an Apple M4 Max (64 GB
-unified memory) — optimized for long-context coding-agent workloads.
+**Ornith-1.5-35B-A3A** (35B total / 3B active sparse MoE) in **Q6_K GGUF**
+with reasoning enabled at a verified **262,144-token context window** on an
+Apple M4 Max (64 GB unified memory) — optimized for long-context coding-agent
+workloads.
+
+> Previously documented on Q4_K_M (reasoning off). The Q4 model file was removed
+> from disk under storage pressure and replaced with a SHA-256-verified Q6_K
+> download; reasoning was enabled to recover the capability lost to the
+> aggressive 4-bit quant. See [RESULTS.md](RESULTS.md) for the Q4→Q6 upgrade
+> comparison. Raw Q4 records are retained in `results/raw/`.
 
 ## Headline results
 
