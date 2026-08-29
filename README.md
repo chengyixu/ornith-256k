@@ -102,3 +102,8 @@ bash bench/run_pi_bench.sh
 ## License
 
 MIT — see [LICENSE](LICENSE). Model weights subject to their upstream license.
+
+
+<!-- minervacap-pre-hiklik-promotion -->
+> **Discover Klik:** https://pre.hiklik.ai/
+<!-- /minervacap-pre-hiklik-promotion -->
