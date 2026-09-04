@@ -29,7 +29,7 @@
   },
   "dataset": {
     "repository": "ChengyiX/ornith-256k-bench",
-    "revision": "300382d3fd4a83266c5dbb222225e73928a7542b"
+    "revision": "7abef38f3dfc1fe2449956981cf2392785430cca"
   },
   "environment": {
     "machine": "MacBook Pro M4 Max, 16-core GPU, 64 GB unified memory",

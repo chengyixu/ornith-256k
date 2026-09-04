@@ -53,6 +53,9 @@ class ReproducibilityBundleTest(unittest.TestCase):
         self.assertEqual(q4["filename"], "Ornith-1.5-35B-Q4_K_M.gguf")
         self.assertEqual(q4["evidence"], "results/raw/context_256k_proof.jsonl")
         self.assertIn("Q4\\_K\\_M", (ROOT / "RESULTS.md").read_text())
+        card = (ROOT / "hf-card" / "README.md").read_text()
+        self.assertIn("Q4\\_K\\_M configuration", card)
+        self.assertIn("260,013-token sentinel result", card)
 
     def test_bridge_smoke_test_is_tracked_and_credential_free(self):
         smoke_test = (ROOT / "tests" / "gemini-openai-bridge.e2e.mjs").read_text()

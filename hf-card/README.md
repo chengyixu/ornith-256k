@@ -23,9 +23,10 @@ inference: false
 
 This repository documents a **measured, reproducible deployment recipe** (no new weights):
 Ornith-1.5 35B-A3B sparse MoE at Q6\_K under **llama.cpp Metal** with reasoning
-enabled, tuned and *verified* for 262,144-token agentic workloads on an M4 Max /
-64 GB. Previously documented on Q4\_K\_M (reasoning off); upgraded to Q6\_K with
-reasoning on to recover capability lost to 4-bit quantization.
+enabled and configured for a 262,144-token context window on an M4 Max / 64 GB.
+The earlier Q4\_K\_M configuration (reasoning off) owns the independently
+verified 260,013-token sentinel result; Q6\_K is the later reasoning-on serving
+and short-workload comparison addendum.
 
 ## Accepted deployment
 
