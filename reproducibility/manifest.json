@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "study": "LocalMoE Ornith 1.5 35B-A3B on Apple Silicon",
+  "repository": "https://github.com/minervacap2022/ornith-256k",
+  "model": {
+    "repository": "ornith-ai/Ornith-1.5-35B-A3B-GGUF",
+    "revision": "12393612fd4f730ff5aadc23e9b8f9648aa49ceb",
+    "filename": "Ornith-1.5-35B-Q6_K.gguf",
+    "size_bytes": 29208731392,
+    "sha256": "15d4658bbfc9c6034621729c15bbb50662c82b32a7ddd9624a1e545a74bdbb4b"
+  },
+  "historical_q4_context_proof": {
+    "repository": "ornith-ai/Ornith-1.5-35B-A3B-GGUF",
+    "revision": "12393612fd4f730ff5aadc23e9b8f9648aa49ceb",
+    "filename": "Ornith-1.5-35B-Q4_K_M.gguf",
+    "size_bytes": 21713463040,
+    "sha256": "42739874cc2ccfdb8523b23fbe52e29b2a7555c8176737ca9ca0b5d59859d41f",
+    "evidence": "results/raw/context_256k_proof.jsonl"
+  },
+  "runtime": {
+    "repository": "https://github.com/ggml-org/llama.cpp",
+    "commit": "bb4caa754",
+    "version": "0.2.0",
+    "build": 10566,
+    "context_tokens": 262144,
+    "parallel_sequences": 1,
+    "flash_attention": true,
+    "kv_cache_quantization": "q4_0"
+  },
+  "dataset": {
+    "repository": "ChengyiX/ornith-256k-bench",
+    "revision": "300382d3fd4a83266c5dbb222225e73928a7542b"
+  },
+  "environment": {
+    "machine": "MacBook Pro M4 Max, 16-core GPU, 64 GB unified memory",
+    "os": "macOS 27.0"
+  },
+  "artifacts": [
+    {"path": "RESULTS.md", "sha256": "0a24b20e1bd7f0fe3caba20a14332b3414182db27d1052c1afe4dbf7f82fda3c"},
+    {"path": "paper/main.tex", "sha256": "83bd5ae1238b0b6a4864bbdc722ab5d7c5b29782156e4977557ffb0ce6ebbc82"},
+    {"path": "paper/main.pdf", "sha256": "bf5efcbbac3825185f4b02c731af5a23432bf75b4fb6183f52f9aa6b35b2a70c"},
+    {"path": "results/raw/context_256k_proof.jsonl", "sha256": "fd715ac9bfd9800cd6dd7e00242895fbb24e642582dfd8d46e46c798a409c860"},
+    {"path": "results/raw/head_to_head_streaming_q4vq6_2026-08-27.jsonl", "sha256": "d04e6b2d89eb4bee5ae54caf39c890daa541104067e050b82131c00f6740a8b6"},
+    {"path": "results/raw/speed_research_summary.json", "sha256": "94fb438e5ed1da3b9ea64d9efc50b27fd144cc0b63e89f5882a2b88bb98894eb"},
+    {"path": "results/provider_integration_20260826.json", "sha256": "d4e4ed7efe451236d56064f0879cb6befb437c3bba9835e034451e1b5c1f68c7"}
+  ]
+}

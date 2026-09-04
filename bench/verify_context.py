@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import os
 import time
 import urllib.request
 from pathlib import Path
@@ -49,7 +50,12 @@ def main() -> None:
         "--model-dir", type=Path, help="Local tokenizer directory (defaults to base-dir/tokenizer)"
     )
     parser.add_argument("--base-url", default="http://127.0.0.1:7871/v1")
-    parser.add_argument("--model", default="Ornith-1.5-35B-A3B-Q4_K_M")
+    parser.add_argument("--model", default="Ornith-1.5-35B-A3B-Q6_K")
+    parser.add_argument(
+        "--api-key",
+        default=os.environ.get("ORNITH_API_KEY", ""),
+        help="Optional local llama-server API key; defaults to ORNITH_API_KEY.",
+    )
     parser.add_argument("--timeout", type=int, default=3_600)
     parser.add_argument(
         "--results-file",
@@ -60,8 +66,6 @@ def main() -> None:
 
     base_dir = args.base_dir.resolve()
     model_dir = (args.model_dir or base_dir / "tokenizer").resolve()
-    settings = json.loads((base_dir / "runtime" / "settings.json").read_text())
-    api_key = settings["auth"]["api_key"]
     prompt = build_prompt(model_dir, args.content_tokens)
 
     payload = {
@@ -74,7 +78,10 @@ def main() -> None:
     request = urllib.request.Request(
         args.base_url.rstrip("/") + "/chat/completions",
         data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"},
+        headers={
+            "Content-Type": "application/json",
+            **({"Authorization": f"Bearer {args.api_key}"} if args.api_key else {}),
+        },
     )
     started = time.perf_counter()
     with urllib.request.urlopen(request, timeout=args.timeout) as response:

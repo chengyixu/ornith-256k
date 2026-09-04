@@ -1,4 +1,4 @@
-# Ornith 1.5 35B A3B Q4_K_M — Local Deployment Results
+# Ornith 1.5 35B A3B — Local Deployment Results
 
 ## Accepted deployment
 
@@ -147,10 +147,14 @@ meaning, not prose). Q4 was faster but its terse answers occasionally omitted
 the requested structure. All outputs were independently verified (fib(10)=55,
 Calculator assertions pass, sorted pipeline output correct).
 
-### Context proof still stands
-Q6 reuses the identical context-window and q4\_0 K/V-cache configuration, so
-the accepted 260,013-token sentinel proof remains valid for the upgraded
-runtime; no re-verify was required for the model swap.
+### Q6 context status
+
+Q6 reuses the same advertised context-window and q4\_0 K/V-cache configuration,
+but the accepted 260,013-token sentinel proof was executed with the earlier
+Q4\_K\_M model. Q6 has not independently re-run that near-limit proof. The Q6
+record here therefore supports the controlled short-workload comparison only;
+run `bench/verify_context.py --model Ornith-1.5-35B-A3B-Q6_K` before claiming a
+Q6 near-limit context result.
 
 ## Reproducibility
 

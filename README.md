@@ -1,4 +1,4 @@
-# LocalMoE: Ornith-1.5-35B-A3A (Q6_K, reasoning on) at 262k Context on Apple Silicon
+# LocalMoE: Ornith-1.5-35B-A3B on Apple Silicon
 
 [![Paper](https://img.shields.io/badge/paper-PDF-blue)](paper/main.pdf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -6,10 +6,10 @@
 [![Runtime](https://img.shields.io/badge/runtime-llama.cpp%20Metal-orange)]()
 
 End-to-end engineering study and reproducible artifacts for serving
-**Ornith-1.5-35B-A3A** (35B total / 3B active sparse MoE) in **Q6_K GGUF**
-with reasoning enabled at a verified **262,144-token context window** on an
-Apple M4 Max (64 GB unified memory) — optimized for long-context coding-agent
-workloads.
+**Ornith-1.5-35B-A3B** (35B total / 3B active sparse MoE) on an Apple M4 Max
+(64 GB unified memory). The original **Q4_K_M** configuration established the
+verified 262,144-token context result; the later **Q6_K** configuration adds a
+reasoning-on serving recipe and controlled short-workload comparison.
 
 > Previously documented on Q4_K_M (reasoning off). The Q4 model file was removed
 > from disk under storage pressure and replaced with a SHA-256-verified Q6_K
@@ -21,7 +21,7 @@ workloads.
 
 | Metric | Dense baseline (LocalFlash) | **LocalMoE (this work)** |
 |---|---|---|
-| Verified context | 260k (dense Qwen3.8) | **260,013 prompt tokens proven w/ sentinel** |
+| Verified context | 260k (dense Qwen3.8) | **260,013 prompt tokens proven w/ Q4_K_M sentinel** |
 | TTFT @ short prompt | 0.60 s med | **0.04 s** |
 | Decode (median, head-to-head) | 9–54 tok/s by category | **37–72 tok/s**, wins 4/5 categories |
 | Agent tasks (6, pi CLI) | 45–269 s each | **3–21 s each (10–14×)** |
@@ -70,20 +70,29 @@ categories on the MoE. Full matrix: `results/raw/speed_research_summary.json`.
 ## Quickstart (reproduce)
 
 ```bash
-# 1. Model weights: ornith-ai/Ornith-1.5-35B-A3B-GGUF (Q4_K_M split)
-#    -> llamacpp/models/Ornith-1.5-35B-Q4_K_M.gguf
-
-# 2. Serve with llama-server 0.2.0+ (Metal), one slot, flash-attn,
-#    q4_0 K/V cache, -c 262144, bound to 127.0.0.1:7871
-#    See deploy/settings.json; API key via file, not argv.
-
-# 3. Verify context (sentinel proof):
-python bench/verify_context.py --content-tokens 260000
-
-# 4. Benchmark:
-python bench/bench_raw_suite.py --runs 3
-bash bench/run_pi_bench.sh
+git clone https://github.com/minervacap2022/ornith-256k.git
+cd ornith-256k
+python3 reproducibility/verify_repro_bundle.py --remote
 ```
+
+[`REPRODUCE.md`](REPRODUCE.md) pins the public Q4_K_M and Q6_K model revisions
+and SHA-256 values, llama.cpp revision, serving parameters, benchmark commands,
+and hardware envelope. It is the authoritative clean-machine procedure; the
+paper preserves the earlier Q4_K_M long-context experiment and the Q6_K
+addendum is documented in the manifest and raw Q4-versus-Q6 record.
+
+## Original-machine controller
+
+The original M4 Max uses one Desktop controller shared with Qwen:
+
+```bash
+/Users/wilsonxu/Desktop/local-llm.command ornith start
+/Users/wilsonxu/Desktop/local-llm.command ornith status
+/Users/wilsonxu/Desktop/local-llm.command ornith test
+/Users/wilsonxu/Desktop/local-llm.command ornith stop
+```
+
+This convenience controller is not required for reproduction on another host.
 
 ## Verification gates (all passed)
 

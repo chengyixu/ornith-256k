@@ -5,14 +5,11 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
+import os
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-QWEN_BENCH_DIR = ROOT.parents[0] / "qwen38-dflash2-bench" / "bench"
-sys.path.insert(0, str(QWEN_BENCH_DIR))
-
 from bench_api import build_prompt, run_once
 
 
@@ -69,15 +66,22 @@ def task_prompts() -> list[dict[str, object]]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default="http://127.0.0.1:7871/v1")
-    parser.add_argument("--model", default="Ornith-1.5-35B-A3B-Q4_K_M")
+    parser.add_argument("--model", default="Ornith-1.5-35B-A3B-Q6_K")
     parser.add_argument(
         "--api-key-file", type=Path, default=ROOT / "runtime" / "llama-server-api-keys.txt"
+    )
+    parser.add_argument(
+        "--api-key",
+        default=os.environ.get("ORNITH_API_KEY", ""),
+        help="Optional local llama-server API key; defaults to ORNITH_API_KEY.",
     )
     parser.add_argument("--runs", type=int, default=3)
     parser.add_argument("--output", type=Path, default=ROOT / "results" / "raw_streaming.jsonl")
     args = parser.parse_args()
 
-    api_key = args.api_key_file.read_text().strip()
+    api_key = args.api_key or (
+        args.api_key_file.read_text().strip() if args.api_key_file.is_file() else ""
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.unlink(missing_ok=True)
 

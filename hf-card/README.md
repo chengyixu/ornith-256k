@@ -3,7 +3,6 @@ language: en
 license: mit
 base_model:
 - ornith-ai/Ornith-1.5-35B-A3B-GGUF
-title: LocalMoE: Ornith-1.5-35B-A3A Q6_K (reasoning on) serving recipe for Apple Silicon
 tags:
 - ornith
 - moe
@@ -20,7 +19,7 @@ tags:
 inference: false
 ---
 
-# LocalMoE: Ornith-1.5-35B-A3A Q6_K (+ reasoning) serving recipe for Apple Silicon
+# LocalMoE: Ornith-1.5-35B-A3B Q6_K (+ reasoning) serving recipe for Apple Silicon
 
 This repository documents a **measured, reproducible deployment recipe** (no new weights):
 Ornith-1.5 35B-A3B sparse MoE at Q6\_K under **llama.cpp Metal** with reasoning
@@ -36,7 +35,7 @@ reasoning on to recover capability lost to 4-bit quantization.
 | Runtime | llama-server 0.2.0 build 10566, Metal, flash attention |
 | Weights | Q6_K (6-bit) |
 | K/V cache | q4_0 quantized, one slot, batch 4096 / ubatch 1024 |
-| Context | **260,013 prompt tokens proven** w/ exact sentinel recovery (adv. 262,144) |
+| Context | Q4_K_M: **260,013 prompt tokens proven**; Q6_K: same advertised 262,144 setting, near-limit proof not yet re-run |
 | Reasoning | on (`--reasoning on --reasoning-budget 4096`) |
 | Endpoint | loopback-only OpenAI-compatible API |
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-PROJECT_ROOT="${ORNITH_PROJECT_ROOT:-/Users/wilsonxu/Models/ornith-256k}"
+PROJECT_ROOT="${ORNITH_PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 LAUNCH_DOMAIN="gui/$(id -u)"
 
 LLAMA_LABEL="local.llamacpp.ornith-256k"
@@ -9,6 +9,7 @@ LLAMA_PLIST="${HOME}/Library/LaunchAgents/${LLAMA_LABEL}.plist"
 LLAMA_URL="http://127.0.0.1:7871"
 LLAMA_HEALTH_URL="${LLAMA_URL}/health"
 LLAMA_LOG="${PROJECT_ROOT}/runtime/logs/llama-server.log"
+LLAMA_API_KEY_FILE="${PROJECT_ROOT}/runtime/llama-server-api-keys.txt"
 
 BRIDGE_LABEL="local.ornith.gemini-bridge"
 BRIDGE_PLIST="${HOME}/Library/LaunchAgents/${BRIDGE_LABEL}.plist"
@@ -16,8 +17,8 @@ BRIDGE_URL="http://127.0.0.1:7872"
 BRIDGE_MODELS_URL="${BRIDGE_URL}/v1beta/models"
 BRIDGE_LOG="${PROJECT_ROOT}/runtime/logs/gemini-openai-bridge.log"
 BRIDGE_ERROR_LOG="${PROJECT_ROOT}/runtime/logs/gemini-openai-bridge.error.log"
-BRIDGE_TEST="${PROJECT_ROOT}/runtime/test-gemini-openai-bridge.mjs"
-NODE_BIN="${ORNITH_NODE_BIN:-/Users/wilsonxu/.nvm/versions/node/v24.11.1/bin/node}"
+BRIDGE_TEST="${PROJECT_ROOT}/tests/gemini-openai-bridge.e2e.mjs"
+NODE_BIN="${ORNITH_NODE_BIN:-$(command -v node || true)}"
 
 DRY_RUN=0
 MENU_MODE=0
@@ -116,18 +117,61 @@ service_state() {
         || printf 'loaded'
 }
 
+llama_probe_status() {
+    if [[ ! -x "$NODE_BIN" || ! -f "$LLAMA_API_KEY_FILE" ]]; then
+        printf 'unavailable'
+        return
+    fi
+
+    "$NODE_BIN" --input-type=module - "$LLAMA_URL" "$LLAMA_API_KEY_FILE" <<'NODE' 2>/dev/null
+import { readFileSync } from 'node:fs';
+
+const [baseUrl, keyFile] = process.argv.slice(2);
+const apiKey = readFileSync(keyFile, 'utf8')
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter((line) => line && !line.startsWith('#'))
+  .flatMap((line) => [line, line.match(/^[^:=]+\s*[:=]\s*(.+)$/)?.[1]?.trim()])
+  .filter(Boolean)
+  .sort((left, right) => right.length - left.length)[0];
+
+try {
+  const models = await fetch(`${baseUrl}/v1/models`, { headers: { authorization: `Bearer ${apiKey}` } });
+  const model = (await models.json()).data?.[0]?.id;
+  if (!models.ok || !model) process.exit(1);
+  const completion = await fetch(`${baseUrl}/v1/chat/completions`, {
+    method: 'POST',
+    headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: 'user', content: 'Reply exactly LOCAL_PROBE_OK.' }],
+      max_tokens: 16,
+      temperature: 0,
+      chat_template_kwargs: { enable_thinking: false },
+    }),
+  });
+  process.stdout.write(String(completion.status));
+} catch {
+  process.exit(1);
+}
+NODE
+}
+
 status() {
-    local llama_state bridge_state llama_http bridge_http
+    local llama_state bridge_state llama_http bridge_http llama_probe
     llama_state="$(service_state "$LLAMA_LABEL")"
     bridge_state="$(service_state "$BRIDGE_LABEL")"
     llama_http="$(http_status "$LLAMA_HEALTH_URL")"
     bridge_http="$(http_status "$BRIDGE_MODELS_URL")"
+    if [[ "$llama_http" == "200" ]]; then
+        llama_probe="$(llama_probe_status || true)"
+    fi
 
     printf 'Ornith local model\n'
-    printf '  llama.cpp  : %-9s port 7871  health HTTP %s\n' "$llama_state" "${llama_http:-down}"
+    printf '  llama.cpp  : %-9s port 7871  health HTTP %s  probe HTTP %s\n' "$llama_state" "${llama_http:-down}" "${llama_probe:-down}"
     printf '  Gemini     : %-9s port 7872  models HTTP %s\n' "$bridge_state" "${bridge_http:-down}"
 
-    if [[ "$llama_http" == "200" && "$bridge_http" == "401" ]]; then
+    if [[ "$llama_http" == "200" && "$llama_probe" == "200" && "$bridge_http" == "401" ]]; then
         printf '  overall    : ready\n'
     elif [[ "$llama_state" != "unloaded" || "$bridge_state" != "unloaded" || -n "$llama_http" || -n "$bridge_http" ]]; then
         printf '  overall    : starting or partially available\n'
@@ -222,7 +266,28 @@ test_api() {
 
     [[ -x "$NODE_BIN" ]] || { printf 'Node executable not found: %s\n' "$NODE_BIN" >&2; return 1; }
     [[ -f "$BRIDGE_TEST" ]] || { printf 'Bridge test not found: %s\n' "$BRIDGE_TEST" >&2; return 1; }
-    "$NODE_BIN" "$BRIDGE_TEST"
+    local api_key
+    if [[ -n "${GEMINI_API_KEY:-}" ]]; then
+        api_key="$GEMINI_API_KEY"
+    elif [[ -f "$LLAMA_API_KEY_FILE" ]]; then
+        api_key="$($NODE_BIN --input-type=module - "$LLAMA_API_KEY_FILE" <<'NODE'
+import { readFileSync } from 'node:fs';
+const apiKey = readFileSync(process.argv[2], 'utf8')
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter((line) => line && !line.startsWith('#'))
+  .flatMap((line) => [line, line.match(/^[^:=]+\s*[:=]\s*(.+)$/)?.[1]?.trim()])
+  .filter(Boolean)
+  .sort((left, right) => right.length - left.length)[0];
+if (!apiKey) process.exit(1);
+process.stdout.write(apiKey);
+NODE
+)"
+    else
+        printf 'Set GEMINI_API_KEY or create %s before testing.\n' "$LLAMA_API_KEY_FILE" >&2
+        return 1
+    fi
+    GEMINI_API_KEY="$api_key" "$NODE_BIN" "$BRIDGE_TEST"
 }
 
 usage() {

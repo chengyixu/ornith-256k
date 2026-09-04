@@ -115,6 +115,12 @@ function toOpenAiRequest(payload, model, stream) {
     stop: payload.generationConfig?.stopSequences,
   };
 
+  // Gemini callers use a zero thinking budget to request a direct answer.
+  // llama.cpp exposes the equivalent through the Qwen chat-template kwarg.
+  if (payload.generationConfig?.thinkingConfig?.thinkingBudget === 0) {
+    request.chat_template_kwargs = { enable_thinking: false };
+  }
+
   const declarations = payload.tools?.flatMap((tool) => tool.functionDeclarations ?? []) ?? [];
   if (declarations.length) {
     request.tools = declarations.map((declaration) => ({

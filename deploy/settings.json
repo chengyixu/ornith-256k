@@ -19,9 +19,9 @@
   },
   "model": {
     "model_dirs": [
-      "/Users/wilsonxu/Models/ornith-256k/models"
+      "./models"
     ],
-    "model_dir": "/Users/wilsonxu/Models/ornith-256k/models",
+    "model_dir": "./models",
     "model_fallback": false,
     "hide_helper_models": true
   },
@@ -48,7 +48,7 @@
     "gdn_snapshot_storage": "auto",
     "gdn_ssd_pending_max_size": "512MB",
     "gdn_sidecar_precision": "fp32",
-    "ssd_cache_dir": "/Users/wilsonxu/Models/ornith-256k/runtime/cache",
+    "ssd_cache_dir": "./runtime/cache",
     "ssd_cache_max_size": "4GB",
     "hot_cache_max_size": "0",
     "initial_cache_blocks": 256
