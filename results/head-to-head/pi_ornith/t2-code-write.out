@@ -1,0 +1,5 @@
+Created `fib.py` with an iterative Fibonacci function and ran it for n=10.
+
+**Output: `55`**
+
+The function iterates 10 times starting from (0, 1), producing the 10th Fibonacci number (with F(0)=0, F(1)=1, ...).

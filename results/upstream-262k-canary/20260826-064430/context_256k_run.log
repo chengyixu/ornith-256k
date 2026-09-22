@@ -1,0 +1,3 @@
+started_at=2026-08-26T06:45:54+08:00
+{"model": "Ornith-1.5-35B-A3B-Q4_K_M-Upstream-262K", "requested_content_tokens": 260000, "server_prompt_tokens": 260013, "completion_tokens": 16, "latency_s": 2732.46, "answer": "ORNITH-256K-NEEDLE-7F3A", "sentinel_found": true, "context_256k_proven": true}
+finished_at=2026-08-26T07:31:33+08:00
