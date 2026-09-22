@@ -1,21 +1,21 @@
 \documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
-\usepackage{amsmath,amssymb}
-\usepackage{booktabs}
-\usepackage{graphicx}
-\usepackage{xcolor}
-\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
-\usepackage{microtype}
+\usepackage{klik-paper}
 
 \newcommand{\system}{\textsc{LocalMoE}}
 \newcommand{\ornith}{Ornith~1.5}
 \newcommand{\llamacpp}{llama.cpp}
+\hypersetup{
+  pdftitle={Small Active Expert, Big Context Window: A 35B-A3B MoE at Q4_K_M Sustains 262k-Token Agentic Inference on 64 GB Unified Memory},
+  pdfauthor={KLIK team},
+  pdfsubject={Verified long-context MoE inference on Apple Silicon},
+  pdfkeywords={Ornith, MoE, Apple Silicon, long context, agentic inference}
+}
 
 \title{\textbf{Small Active Expert, Big Context Window:\\ A 35B-A3B MoE at Q4\_K\_M Sustains 262k-Token\\ Agentic Inference on 64\,GB Unified Memory}}
 
-\author{chengyixu\thanks{Personal-systems research. Deployment artifacts and raw measurements:
-\url{https://github.com/chengyixu/ornith-256k} (code) and the accompanying Hugging Face
-repository. Hardware: MacBook Pro, Apple M4 Max (16-core), 64\,GB unified memory, macOS 27.0.}}
+\author{KLIK team\thanks{KLIK Research. Deployment artifacts and raw measurements are available at\\
+\url{https://github.com/chengyixu/ornith-256k} and the accompanying Hugging Face repository.\\
+Hardware: MacBook Pro, Apple M4 Max, 64\,GB unified memory, macOS 27.0.}}
 \date{August 26, 2026}
 
 \begin{document}
@@ -405,27 +405,29 @@ condition due to the operational incident described above.
 \begin{itemize}
 \item Context proof: \texttt{bench/verify\_context.py -{}-content-tokens 260000}
 \item Streaming suite: \texttt{bench/bench\_raw\_suite.py -{}-runs 3}
-\item Head-to-head pi suite: \texttt{bench/run\_pi\_bench.sh},
-      \texttt{bench/bench\_pi.sh}, \texttt{bench/bench\_pi\_ornith.sh}
-\item Raw records: \texttt{results/raw/*.jsonl} (streaming, cached-prefix,
-      context proof, QA, agent turns, head-to-head)
+\item Head-to-head pi suite: \path{bench/run_pi_bench.sh},
+      \path{bench/bench_pi.sh}, and \path{bench/bench_pi_ornith.sh}.
+\item Raw records: \path{results/raw/*.jsonl} (streaming, cached-prefix,
+      context proof, QA, agent turns, and head-to-head).
 \item Deployment manifests: \texttt{deploy/}
 \end{itemize}
 
 \section*{Artifacts}
+\begin{sloppypar}
 \begin{itemize}
 \item GitHub: \url{https://github.com/chengyixu/ornith-256k}
 \item Hugging Face model card: \url{https://huggingface.co/ChengyiX/Ornith-1.5-35B-A3B-Q4_K_M-LocalMoe-M4Max}
 \item Hugging Face dataset (raw records): \url{https://huggingface.co/datasets/ChengyiX/ornith-256k-bench}
 \item Prior dense baseline: \url{https://github.com/chengyixu/qwen38-dflash2-bench}
 \end{itemize}
+\end{sloppypar}
 
 \bibliographystyle{plain}
 \begin{thebibliography}{9}
 \bibitem{ornith} ornith.ai. \emph{Ornith-1.5-35B-A3B-GGUF}. Hugging Face model repository, 2026.
 \bibitem{qwen38} Qwen Team. \emph{Qwen3.8-27B: Hybrid Linear-Attention Dense Model}. Technical report, 2026.
 \bibitem{dflash} z-lab. \emph{DFlash 2: Block-Diffusion Speculative Decoding}. GitHub / Hugging Face, 2026.
-\bibitem{localflash} chengyixu. \emph{Losing the Draft, Keeping the Speed: Block-Diffusion Speculative Decoding and Prefix-Cached Serving for Long-Context Agentic LLM Workloads on Apple Silicon}. Personal-systems research report, August 2026. \url{https://github.com/chengyixu/qwen38-dflash2-bench}.
+\bibitem{localflash} KLIK team. \emph{Losing the Draft, Keeping the Speed: Block-Diffusion Speculative Decoding and Prefix-Cached Serving for Long-Context Agentic LLM Workloads on Apple Silicon}. KLIK Research systems report, August 2026. \url{https://github.com/chengyixu/qwen38-dflash2-bench}.
 \bibitem{freetoken} Anonymous. \emph{FreeToken: State Reuse Governs Agentic Latency on Unified Memory}. arXiv:2608.16157, 2026.
 \bibitem{llamacpp} Gerganov, G.\ et al. \emph{llama.cpp}. \url{https://github.com/ggml-org/llama.cpp}.
 \bibitem{pi} pi contributors. \emph{pi: AI coding assistant}. \url{https://github.com/badlogic/pi-mono}.

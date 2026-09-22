@@ -108,6 +108,17 @@ This convenience controller is not required for reproduction on another host.
 - [ornith-ai/Ornith-1.5-35B-A3B-GGUF](https://huggingface.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF) — model weights
 - Raw records also mirrored at [ChengyiX/ornith-256k-bench](https://huggingface.co/datasets/ChengyiX/ornith-256k-bench)
 
+## Citation
+
+```bibtex
+@misc{klikteam2026localmoe,
+  title={Small Active Expert, Big Context Window},
+  author={KLIK team},
+  year={2026},
+  url={https://github.com/chengyixu/ornith-256k}
+}
+```
+
 ## License
 
 MIT — see [LICENSE](LICENSE). Model weights subject to their upstream license.

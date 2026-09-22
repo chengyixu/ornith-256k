@@ -1,9 +1,0 @@
-Here are the top-level entries in the current directory:
-
-| Entry | Type |
-|-------|------|
-| `broken.py` | File |
-| `package.json` | File |
-| `refactor_demo.py` | File |
-
-All three top-level entries are files; there are no directories in the current directory.

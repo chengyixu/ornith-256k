@@ -92,3 +92,14 @@ bash bench/run_pi_bench.sh                               # agent suite
 ```
 
 Model weights are subject to the upstream ornith.ai license; this recipe is MIT.
+
+## Citation
+
+```bibtex
+@misc{klikteam2026localmoe,
+  title={Small Active Expert, Big Context Window},
+  author={KLIK team},
+  year={2026},
+  url={https://github.com/chengyixu/ornith-256k}
+}
+```

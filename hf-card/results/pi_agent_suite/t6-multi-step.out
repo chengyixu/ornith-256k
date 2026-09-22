@@ -1,8 +1,0 @@
-All steps ran in order. Observed outputs:
-
-1. **`echo hello`** → `hello`
-2. **Created `nums.txt`** with lines 1–5 (written via `printf`)
-3. **`sort -n nums.txt`** → `1 / 2 / 3 / 4 / 5` (already in ascending order, so output unchanged)
-4. **`wc -l < nums.txt`** → `5`
-
-Note: `nums.txt` is in the working directory (`.../tasks`). The `wc -l` returns `5` because each line (including the last) ends with a newline.

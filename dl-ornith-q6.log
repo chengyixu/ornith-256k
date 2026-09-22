@@ -1,7 +1,0 @@
-/opt/homebrew/lib/python3.14/site-packages/huggingface_hub/commands/download.py:141: FutureWarning: Ignoring --local-dir-use-symlinks. Downloading to a local directory does not use symlinks anymore.
-  warnings.warn(
-/opt/homebrew/lib/python3.14/site-packages/huggingface_hub/file_download.py:942: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
-  warnings.warn(
-Downloading 'Ornith-1.5-35B-Q6_K.gguf' to 'llamacpp/models/.cache/huggingface/download/cJRZSk-aPH3B07zMQPC7_k-dsjs=.15d4658bbfc9c6034621729c15bbb50662c82b32a7ddd9624a1e545a74bdbb4b.incomplete'
-/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/resource_tracker.py:396: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-a1xjv0lz'}
-  warnings.warn(
