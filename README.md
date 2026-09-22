@@ -113,7 +113,7 @@ This convenience controller is not required for reproduction on another host.
 ```bibtex
 @misc{klikteam2026localmoe,
   title={Small Active Expert, Big Context Window},
-  author={KLIK team},
+  author={Xu, Chengyi and {{KLIK team}}},
   year={2026},
   url={https://github.com/chengyixu/ornith-256k}
 }

@@ -3,6 +3,8 @@ title: "Small Active Expert, Big Context Window"
 message: "If you use this artifact, please cite the paper and repository."
 type: article
 authors:
+  - family-names: "Xu"
+    given-names: "Chengyi"
   - name: "KLIK team"
 repository-code: "https://github.com/chengyixu/ornith-256k"
 url: "https://github.com/chengyixu/ornith-256k"
